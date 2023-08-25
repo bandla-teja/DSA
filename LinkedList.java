@@ -67,6 +67,55 @@ public class LinkedList {
         size++;
     }
 
+    public void deleteFirst(){
+        head = head.next;
+        if(head == null){
+            tail = null;
+        } else if(head != null && head.next == null){
+            tail = head;
+        }
+        size--;
+    }
+
+    public void deleteLast(){
+        Node temp = head;
+        Node prev = head;
+        while(temp.next != null){
+            prev = temp;
+            temp = temp.next;
+        }
+        prev.next = null;
+        tail = prev;
+        size--;
+    }
+
+    public void delete(int index){
+        if(index == 0){
+            deleteFirst();
+            return;
+        }
+
+        if(index == size-1){
+            deleteLast();
+            return;
+        }
+
+        Node temp = head;
+        Node prev = head;
+        int i=0;
+        while(temp != null){
+            if(i == index){
+                break;
+            }
+            prev = temp;
+            temp = temp.next;
+            i++;
+        }
+
+        prev.next = temp.next;
+        size--;
+    }
+
     public void traverse(){
         Node temp = head;
         while(temp != null){
@@ -81,6 +130,10 @@ public class LinkedList {
         list.insert(3, 1);
         list.insertLast(4);
         list.insert(2, 1);
+        list.deleteFirst();
+        list.deleteLast();
+        list.insertLast(5);
+        list.delete(1);
         list.traverse();
     }
 
