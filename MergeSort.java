@@ -1,42 +1,50 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 class MergeSort {
     public static void main(String[] args){
-        System.out.println(Arrays.toString(twoSum(null, 0)));
+        System.out.println(Arrays.toString(mergeSort(new int[]{5,3,2,1,4})));
     }
-    public static int[] twoSum(int[] nums, int target) {
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for(int i=0;i<nums.length;i++){
-            if(map.get(nums[i]) == null){
-                List<Integer> list = new ArrayList<>();
-                list.add(i);
-                map.put(nums[i], list);
-            } else {
-                List<Integer> list = map.get(nums[i]);
-                list.add(i);
-                map.put(nums[i], list);
-            }
+    
+    private static int[] mergeSort(int[] arr){
+
+        if(arr.length == 1){
+            return arr;
         }
-        Arrays.sort(nums);
+
+        int mid = arr.length/2;
+        int[] left = mergeSort(Arrays.copyOfRange(arr, 0, mid));
+        int[] right = mergeSort(Arrays.copyOfRange(arr, mid, arr.length));
+
+
+        return merge(left, right);
+    }
+
+    private static int[] merge(int[] left, int[] right){
+        int[] mix = new int[left.length+right.length];
         int i=0;
-        int j=nums.length-1;
-        while(i<j){
-            int sum = nums[i]+nums[j];
-            if(sum == target){
-                if(nums[i] == nums[j]){
-                    return new int[]{map.get(nums[i]).get(0),map.get(nums[i]).get(1)};
-                }
-                return new int[]{map.get(nums[i]).get(0),map.get(nums[j]).get(0)};
-            } else if(sum < target){
+        int j=0;
+        int k=0;
+
+        while(i < left.length && j < right.length){
+            if(left[i] < right[j]){
+                mix[k] = left[i];
                 i++;
             } else {
-                j--;
+                mix[k] = right[j];
+                j++;
             }
+            k++;
         }
-        return new int[]{-1,-1};
+
+        while(i < left.length){
+            mix[k] = left[i];
+            i++;
+        }
+
+        while(j < right.length){
+            mix[k] = right[j];
+            j++;
+        }
+
+        return mix;
     }
 }
